@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cafe MX2 — Website Pitch Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4A853;
+  --gold-light:#F0C97A;
+  --gold-dim:rgba(212,168,83,0.15);
+  --dark:#0A0705;
+  --dark2:#110E09;
+  --dark3:#1A1510;
+  --cream:#F5EED8;
+  --cream-dim:rgba(245,238,216,0.6);
+  --cream-faint:rgba(245,238,216,0.12);
+}
+
+body{background:#000;font-family:'Outfit',sans-serif;overflow:hidden;height:100vh;cursor:none}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s}
+#cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(212,168,83,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease}
+
+/* OUTER SHELL */
+#pitch-shell{
+  width:100vw;height:100vh;
+  background:linear-gradient(135deg,#0d0a06 0%,#1a1410 50%,#0d0a06 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+
+/* Ambient particles */
+.particle{position:absolute;border-radius:50%;pointer-events:none;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:0.6}100%{transform:translateY(-100px) rotate(360deg);opacity:0}}
+
+/* TOP AGENCY BAR */
+#agency-bar{
+  position:absolute;top:0;left:0;right:0;
+  padding:12px 32px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(10,7,5,0.8);
+  border-bottom:1px solid rgba(212,168,83,0.2);
+  z-index:100;
+  backdrop-filter:blur(10px);
+}
+.agency-name{font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:500}
+.pitch-badge{background:var(--gold);color:#000;font-size:10px;padding:4px 12px;border-radius:20px;font-weight:600;letter-spacing:1px;text-transform:uppercase;animation:pulse-badge 2s ease-in-out infinite}
+@keyframes pulse-badge{0%,100%{opacity:1}50%{opacity:0.7}}
+
+/* BROWSER MOCKUP */
+#browser{
+  width:min(860px,92vw);
+  height:min(560px,78vh);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 40px 120px rgba(0,0,0,0.8),0 0 60px rgba(212,168,83,0.08),inset 0 1px 0 rgba(255,255,255,0.05);
+  border:1px solid rgba(212,168,83,0.15);
+  position:relative;
+}
+
+/* Browser chrome */
+#browser-chrome{
+  height:42px;
+  background:linear-gradient(180deg,#1e1a14 0%,#171310 100%);
+  display:flex;align-items:center;padding:0 14px;gap:10px;
+  border-bottom:1px solid rgba(212,168,83,0.1);
+  flex-shrink:0;
+}
+.chrome-dot{width:11px;height:11px;border-radius:50%}
+#url-bar{
+  flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:5px 12px;font-size:11px;color:rgba(255,255,255,0.4);
+  margin:0 10px;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:6px;
+}
+.lock-icon{color:var(--gold);font-size:9px}
+
+/* WEBSITE CONTENT AREA */
+#website{width:100%;height:calc(100% - 42px);overflow:hidden;position:relative;background:var(--dark)}
+
+/* All sections */
+.section{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+  pointer-events:none;overflow:hidden;
+}
+.section.active{opacity:1;transform:translateY(0);pointer-events:all}
+.section.exit{opacity:0;transform:translateY(-20px)}
+
+/* ─── SECTION 1: HERO ─── */
+#sec-hero{background:var(--dark)}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 70% 50%, rgba(212,168,83,0.07) 0%, transparent 70%),
+             radial-gradient(ellipse 40% 80% at 20% 30%, rgba(212,168,83,0.04) 0%, transparent 60%),
+             linear-gradient(160deg,#12100a 0%,#0a0705 100%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(212,168,83,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(212,168,83,0.03) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.hero-content{position:absolute;top:50%;left:6%;transform:translateY(-50%);max-width:55%}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.25);
+  padding:5px 14px;border-radius:20px;margin-bottom:20px;
+  font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+  animation:fadeInDown 0.8s 0.3s both;
+}
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,5vw,58px);
+  line-height:1.05;font-weight:600;color:var(--cream);
+  margin-bottom:16px;
+  animation:fadeInUp 0.8s 0.5s both;
+}
+.hero-h1 em{color:var(--gold);font-style:italic}
+.hero-sub{
+  font-size:13px;color:rgba(245,238,216,0.55);line-height:1.7;
+  margin-bottom:28px;font-weight:300;
+  animation:fadeInUp 0.8s 0.7s both;
+}
+.hero-btns{display:flex;gap:12px;animation:fadeInUp 0.8s 0.9s both}
+.btn-gold{
+  background:var(--gold);color:#000;border:none;
+  padding:11px 24px;border-radius:4px;font-size:12px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+}
+.btn-ghost{
+  background:transparent;color:var(--cream);
+  border:1px solid rgba(245,238,216,0.25);
+  padding:11px 24px;border-radius:4px;font-size:12px;font-weight:400;
+  letter-spacing:0.5px;cursor:pointer;font-family:'Outfit',sans-serif;
+}
+
+.hero-right{position:absolute;right:5%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;animation:fadeInRight 0.8s 0.8s both}
+.stat-pill{
+  background:rgba(212,168,83,0.08);
+  border:1px solid rgba(212,168,83,0.2);
+  border-radius:8px;padding:14px 20px;text-align:center;min-width:100px;
+}
+.stat-pill .num{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);font-weight:600;line-height:1}
+.stat-pill .lbl{font-size:9px;color:rgba(245,238,216,0.4);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+
+.hero-nav{
+  position:absolute;top:0;left:0;right:0;
+  padding:16px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(180deg,rgba(10,7,5,0.9) 0%,transparent 100%);
+}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);letter-spacing:3px;font-weight:600}
+.nav-items{display:flex;gap:20px}
+.nav-items span{font-size:11px;color:rgba(245,238,216,0.5);letter-spacing:1px;cursor:pointer}
+.nav-book{background:var(--gold);color:#000;padding:7px 16px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+
+/* ─── SECTION 2: MENU ─── */
+#sec-menu{background:var(--dark2)}
+.menu-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%, rgba(212,168,83,0.05) 0%, transparent 60%)}
+.menu-header{position:absolute;top:24px;left:32px;right:32px}
+.sec-eyebrow{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--cream);font-weight:600}
+.menu-cols{position:absolute;top:90px;left:32px;right:32px;bottom:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.menu-col{background:rgba(245,238,216,0.03);border:1px solid rgba(212,168,83,0.1);border-radius:10px;padding:18px 16px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.col-header{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);border-bottom:1px solid rgba(212,168,83,0.15);padding-bottom:8px;margin-bottom:4px}
+.menu-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(245,238,216,0.05)}
+.item-name{font-size:11px;color:rgba(245,238,216,0.75);font-weight:400}
+.item-price{font-size:11px;color:var(--gold);font-weight:500}
+.item-desc{font-size:10px;color:rgba(245,238,216,0.35);margin-top:2px}
+
+/* ─── SECTION 3: GALLERY/VIBE ─── */
+#sec-vibe{background:var(--dark)}
+.vibe-layout{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.vibe-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:20px}
+.vibe-cell:nth-child(1){background:linear-gradient(135deg,#1a1205 0%,#2a1f0a 100%)}
+.vibe-cell:nth-child(2){background:linear-gradient(135deg,#0d1a12 0%,#102015 100%)}
+.vibe-cell:nth-child(3){background:linear-gradient(135deg,#0d1220 0%,#0f1828 100%)}
+.vibe-cell:nth-child(4){background:linear-gradient(135deg,#200d0d 0%,#2a1010 100%)}
+.vibe-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:48px;opacity:0.15}
+.vibe-label{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);position:relative;z-index:1}
+.vibe-sub{font-size:10px;color:rgba(245,238,216,0.4);margin-top:3px;letter-spacing:1px}
+.vibe-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,7,5,0.7) 0%,transparent 50%)}
+
+/* ─── SECTION 4: REVIEWS ─── */
+#sec-reviews{background:var(--dark3)}
+.reviews-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%, rgba(212,168,83,0.05) 0%, transparent 60%)}
+.reviews-header{position:absolute;top:24px;left:32px;right:32px}
+.reviews-grid{position:absolute;top:90px;left:32px;right:32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.review-card{
+  background:rgba(245,238,216,0.03);
+  border:1px solid rgba(212,168,83,0.12);
+  border-radius:10px;padding:18px;position:relative;overflow:hidden;
+}
+.review-card::before{
+  content:'"';position:absolute;top:-10px;left:14px;
+  font-family:'Cormorant Garamond',serif;font-size:80px;
+  color:rgba(212,168,83,0.06);line-height:1;
+}
+.r-stars{color:var(--gold);font-size:11px;margin-bottom:10px;letter-spacing:2px}
+.r-text{font-size:12px;color:rgba(245,238,216,0.65);line-height:1.6;font-style:italic;margin-bottom:12px;font-family:'Cormorant Garamond',serif;font-size:13px}
+.r-author{font-size:10px;color:rgba(245,238,216,0.35);letter-spacing:1px;text-transform:uppercase}
+.rating-big{position:absolute;bottom:24px;right:32px;text-align:center}
+.rating-big .num{font-family:'Cormorant Garamond',serif;font-size:72px;color:var(--gold);line-height:1;font-weight:300}
+.rating-big .lbl{font-size:10px;color:rgba(245,238,216,0.3);letter-spacing:2px}
+
+/* ─── SECTION 5: BOOKING ─── */
+#sec-booking{background:var(--dark)}
+.booking-split{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr}
+.booking-left{
+  background:linear-gradient(135deg,#1a1307 0%,#0d0a04 100%);
+  padding:40px 36px;display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid rgba(212,168,83,0.1);
+}
+.booking-right{padding:40px 36px;display:flex;flex-direction:column;justify-content:center;background:var(--dark)}
+.booking-big{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--cream);line-height:1.1;font-weight:600;margin-bottom:16px}
+.booking-big em{color:var(--gold);font-style:italic}
+.booking-desc{font-size:13px;color:rgba(245,238,216,0.45);line-height:1.7;font-weight:300;margin-bottom:24px}
+.info-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.info-icon{width:32px;height:32px;border-radius:50%;background:rgba(212,168,83,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.info-text{font-size:12px;color:rgba(245,238,216,0.55)}
+.form-field{margin-bottom:14px}
+.form-field label{font-size:10px;letter-spacing:2px;color:rgba(245,238,216,0.35);text-transform:uppercase;display:block;margin-bottom:6px}
+.form-field input,.form-field select{
+  width:100%;background:rgba(245,238,216,0.04);
+  border:1px solid rgba(212,168,83,0.15);
+  border-radius:6px;padding:10px 14px;
+  font-size:12px;color:var(--cream);font-family:'Outfit',sans-serif;
+  outline:none;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit-btn{
+  width:100%;background:var(--gold);color:#000;border:none;
+  padding:13px;border-radius:6px;font-size:12px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
+  margin-top:4px;font-family:'Outfit',sans-serif;
+}
+
+/* ─── SECTION 6: MAP/FIND US ─── */
+#sec-find{background:var(--dark2)}
+.find-layout{position:absolute;inset:0;display:grid;grid-template-columns:1.2fr 1fr}
+.map-side{background:#0f1510;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,100,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,100,0.04) 1px,transparent 1px);background-size:30px 30px}
+.map-roads{position:absolute;inset:0}
+.map-pin{position:absolute;top:45%;left:52%;transform:translate(-50%,-50%)}
+.pin-pulse{width:60px;height:60px;border-radius:50%;background:rgba(212,168,83,0.1);border:2px solid rgba(212,168,83,0.3);display:flex;align-items:center;justify-content:center;animation:ping 2s ease-in-out infinite}
+@keyframes ping{0%,100%{box-shadow:0 0 0 0 rgba(212,168,83,0.4)}50%{box-shadow:0 0 0 20px rgba(212,168,83,0)}}
+.pin-dot{width:14px;height:14px;border-radius:50%;background:var(--gold)}
+.map-label{position:absolute;top:calc(45% + 42px);left:52%;transform:translateX(-50%);background:rgba(212,168,83,0.9);color:#000;font-size:10px;font-weight:600;padding:4px 10px;border-radius:4px;white-space:nowrap}
+.find-info-side{padding:40px 36px;display:flex;flex-direction:column;justify-content:center}
+.find-title{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--cream);margin-bottom:6px;font-weight:600}
+.find-sub{font-size:12px;color:rgba(245,238,216,0.35);margin-bottom:24px;line-height:1.6}
+.contact-block{background:rgba(212,168,83,0.05);border:1px solid rgba(212,168,83,0.12);border-radius:8px;padding:16px 18px;margin-bottom:12px}
+.contact-block .cb-label{font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.contact-block .cb-val{font-size:13px;color:var(--cream);font-weight:400}
+.hours-row{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid rgba(245,238,216,0.05)}
+.hours-row .day{color:rgba(245,238,216,0.45)}
+.hours-row .time{color:var(--cream)}
+
+/* ANIMATIONS */
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* PROGRESS BAR */
+#progress-bar{
+  position:absolute;bottom:0;left:0;
+  height:2px;background:var(--gold);
+  transition:width 0.1s linear;z-index:200;
+}
+
+/* CONTROLS */
+#controls{
+  display:flex;align-items:center;gap:16px;
+  margin-top:18px;
+}
+.ctrl-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(212,168,83,0.1);border:1px solid rgba(212,168,83,0.25);
+  color:var(--gold);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;font-family:monospace;
+}
+.ctrl-btn:hover{background:rgba(212,168,83,0.2)}
+.ctrl-btn.active-play{background:var(--gold);color:#000}
+#section-dots{display:flex;gap:8px}
+.s-dot{width:20px;height:3px;border-radius:2px;background:rgba(245,238,216,0.15);cursor:pointer;transition:all 0.3s}
+.s-dot.active{background:var(--gold);width:32px}
+#section-label{font-size:11px;color:rgba(245,238,216,0.4);letter-spacing:1.5px;text-transform:uppercase;min-width:120px}
+#time-left{font-size:11px;color:rgba(245,238,216,0.25);letter-spacing:1px;margin-left:auto}
+
+/* TOOLTIP */
+.tooltip{
+  position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  background:rgba(212,168,83,0.95);color:#000;font-size:10px;
+  padding:5px 10px;border-radius:4px;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity 0.2s;font-weight:500;letter-spacing:0.5px;
+}
+.s-dot:hover .tooltip{opacity:1}
+.s-dot{position:relative}
+
+/* SECTION COUNTER */
+#sec-counter{
+  position:absolute;top:60px;right:24px;z-index:50;
+  font-family:'Cormorant Garamond',serif;font-size:13px;
+  color:rgba(212,168,83,0.4);letter-spacing:1px;
+}
+
+/* DECORATIVE LINES */
+.deco-line{position:absolute;background:rgba(212,168,83,0.06)}
+
+/* MENU ANIMATIONS */
+.menu-col{animation:none}
+.menu-col.anim{animation:slideUp 0.5s ease both}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Particles -->
+<div id="pitch-shell">
+  <div id="agency-bar">
+    <span class="agency-name">Your Agency — Website Proposal</span>
+    <div style="display:flex;align-items:center;gap:16px">
+      <span style="font-size:11px;color:rgba(245,238,216,0.3)">Prepared exclusively for</span>
+      <span style="font-size:13px;color:var(--gold);font-family:'Cormorant Garamond',serif;font-weight:600">Cafe MX2, Pune</span>
+      <span class="pitch-badge">Live Preview</span>
+    </div>
+  </div>
+
+  <!-- Browser -->
+  <div id="browser">
+    <div id="browser-chrome">
+      <div class="chrome-dot" style="background:#FF5F57"></div>
+      <div class="chrome-dot" style="background:#FEBC2E"></div>
+      <div class="chrome-dot" style="background:#28C840"></div>
+      <div id="url-bar">
+        <span class="lock-icon">🔒</span>
+        <span id="url-text">www.cafemx2.in</span>
+      </div>
+      <span style="font-size:10px;color:rgba(255,255,255,0.2)">⟳</span>
+    </div>
+
+    <div id="website">
+      <div id="sec-counter">01 / 06</div>
+      <div id="progress-bar" style="width:0%"></div>
+
+      <!-- SECTION 1: HERO -->
+      <div class="section active" id="sec-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <nav class="hero-nav">
+          <div class="nav-logo">MX2</div>
+          <div class="nav-items">
+            <span>Menu</span><span>Vibe</span><span>Reviews</span><span>Find Us</span>
+          </div>
+          <div class="nav-book">Reserve Table</div>
+        </nav>
+        <div class="hero-content">
+          <div class="hero-tag">📍 Wadgaon Sheri, Pune</div>
+          <h1 class="hero-h1">Pune's Most<br><em>Beloved</em><br>Cafe Experience</h1>
+          <p class="hero-sub">Craft burgers, artisan coffee & celebration dining<br>Open 7am – Midnight, every day.</p>
+          <div class="hero-btns">
+            <button class="btn-gold">Explore Menu</button>
+            <button class="btn-ghost">Book a Table →</button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="stat-pill"><div class="num">4.5★</div><div class="lbl">Google Rating</div></div>
+          <div class="stat-pill"><div class="num">170+</div><div class="lbl">Reviews</div></div>
+          <div class="stat-pill"><div class="num">₹400</div><div class="lbl">For Two</div></div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: MENU -->
+      <div class="section" id="sec-menu">
+        <div class="menu-bg"></div>
+        <div class="menu-header">
+          <div class="sec-eyebrow">Our Menu</div>
+          <div class="sec-title">Crafted with Passion</div>
+        </div>
+        <div class="menu-cols">
+          <div class="menu-col">
+            <div class="col-header">🍔 Burgers & Wraps</div>
+            <div class="menu-item"><div><div class="item-name">MX2 Special Chicken</div><div class="item-desc">House signature</div></div><div class="item-price">₹180</div></div>
+            <div class="menu-item"><div><div class="item-name">Paneer Royale</div><div class="item-desc">Grilled paneer + aioli</div></div><div class="item-price">₹150</div></div>
+            <div class="menu-item"><div><div class="item-name">Chicken Grilled</div><div class="item-desc">Smoky & juicy</div></div><div class="item-price">₹160</div></div>
+            <div class="menu-item"><div><div class="item-name">King of Veg</div><div class="item-desc">Double patty veggie</div></div><div class="item-price">₹130</div></div>
+            <div class="menu-item"><div><div class="item-name">Bombay Vada Burger</div><div class="item-desc">Street style</div></div><div class="item-price">₹90</div></div>
+          </div>
+          <div class="menu-col">
+            <div class="col-header">🍕 Pizza & Pasta</div>
+            <div class="menu-item"><div><div class="item-name">MX2 Special Pizza</div><div class="item-desc">Chef's loaded version</div></div><div class="item-price">₹220</div></div>
+            <div class="menu-item"><div><div class="item-name">BBQ Chicken Pizza</div><div class="item-desc">Smoky sauce base</div></div><div class="item-price">₹200</div></div>
+            <div class="menu-item"><div><div class="item-name">Margherita Classic</div><div class="item-desc">Tomato, basil, mozzarella</div></div><div class="item-price">₹160</div></div>
+            <div class="menu-item"><div><div class="item-name">Penne Arrabiata</div><div class="item-desc">Spicy tomato sauce</div></div><div class="item-price">₹140</div></div>
+            <div class="menu-item"><div><div class="item-name">White Sauce Pasta</div><div class="item-desc">Creamy & rich</div></div><div class="item-price">₹140</div></div>
+          </div>
+          <div class="menu-col">
+            <div class="col-header">☕ Drinks & Desserts</div>
+            <div class="menu-item"><div><div class="item-name">MX2 Cold Coffee</div><div class="item-desc">House blend</div></div><div class="item-price">₹99</div></div>
+            <div class="menu-item"><div><div class="item-name">Oreo Shake</div><div class="item-desc">Thick & creamy</div></div><div class="item-price">₹110</div></div>
+            <div class="menu-item"><div><div class="item-name">Strawberry Shake</div><div class="item-desc">Fresh fruit base</div></div><div class="item-price">₹100</div></div>
+            <div class="menu-item"><div><div class="item-name">Hot Cappuccino</div><div class="item-desc">Italian style</div></div><div class="item-price">₹80</div></div>
+            <div class="menu-item"><div><div class="item-name">Brownie + Ice Cream</div><div class="item-desc">Warm & cold combo</div></div><div class="item-price">₹120</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: VIBE -->
+      <div class="section" id="sec-vibe">
+        <div class="vibe-layout">
+          <div class="vibe-cell">
+            <div class="vibe-emoji">🍔</div>
+            <div class="vibe-overlay"></div>
+            <div><div class="vibe-label">Crafted Flavors</div><div class="vibe-sub">FRESH · LOCAL · PASSIONATE</div></div>
+          </div>
+          <div class="vibe-cell">
+            <div class="vibe-emoji">🎂</div>
+            <div class="vibe-overlay"></div>
+            <div><div class="vibe-label">Celebrate Here</div><div class="vibe-sub">BIRTHDAYS · ANNIVERSARIES</div></div>
+          </div>
+          <div class="vibe-cell">
+            <div class="vibe-emoji">🌙</div>
+            <div class="vibe-overlay"></div>
+            <div><div class="vibe-label">Open Till Midnight</div><div class="vibe-sub">7 AM — 12 MIDNIGHT</div></div>
+          </div>
+          <div class="vibe-cell">
+            <div class="vibe-emoji">☕</div>
+            <div class="vibe-overlay"></div>
+            <div><div class="vibe-label">Coffee & Vibes</div><div class="vibe-sub">YOUR FAVOURITE CORNER</div></div>
+          </div>
+        </div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:10;pointer-events:none">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:42px;color:rgba(245,238,216,0.9);font-weight:600;text-shadow:0 4px 30px rgba(0,0,0,0.8)">The MX2 <em style="color:var(--gold)">Vibe</em></div>
+          <div style="font-size:11px;color:rgba(245,238,216,0.4);letter-spacing:3px;margin-top:6px;text-transform:uppercase">More than just a meal</div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: REVIEWS -->
+      <div class="section" id="sec-reviews">
+        <div class="reviews-bg"></div>
+        <div class="reviews-header">
+          <div class="sec-eyebrow">What People Say</div>
+          <div class="sec-title">Loved by Pune</div>
+        </div>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div class="r-stars">★★★★★</div>
+            <div class="r-text">"Celebrated my birthday here — the food, ambiance and hospitality were absolutely outstanding. Will definitely come back!"</div>
+            <div class="r-author">— Priyanka R. · Google Review</div>
+          </div>
+          <div class="review-card">
+            <div class="r-stars">★★★★★</div>
+            <div class="r-text">"Best cold coffee in Wadgaon Sheri, hands down. The MX2 special burger is something else entirely. Staff is super warm."</div>
+            <div class="r-author">— Rohan M. · Zomato</div>
+          </div>
+          <div class="review-card">
+            <div class="r-stars">★★★★☆</div>
+            <div class="r-text">"Great taste, great presentation, very reasonable prices. Perfect spot for a date night or catching up with friends."</div>
+            <div class="r-author">— Sneha K. · Justdial</div>
+          </div>
+        </div>
+        <div class="rating-big">
+          <div class="num">4.5</div>
+          <div class="lbl">Average Rating</div>
+          <div style="color:var(--gold);font-size:16px;margin-top:4px;letter-spacing:3px">★★★★★</div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: BOOKING -->
+      <div class="section" id="sec-booking">
+        <div class="booking-split">
+          <div class="booking-left">
+            <div style="font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:12px">Reserve Your Spot</div>
+            <div class="booking-big">Book a<br><em>Table</em><br>Online</div>
+            <div class="booking-desc">Planning a birthday, anniversary or just a special evening? Reserve your spot and we'll make it unforgettable.</div>
+            <div class="info-row"><div class="info-icon">📍</div><div class="info-text">Shop 9, Pooja Classic, Wadgaon Sheri, Pune 411014</div></div>
+            <div class="info-row"><div class="info-icon">📞</div><div class="info-text">+91 7769834424</div></div>
+            <div class="info-row"><div class="info-icon">🕐</div><div class="info-text">Open 7:00 AM — 12:00 Midnight, All Days</div></div>
+          </div>
+          <div class="booking-right">
+            <div class="form-field"><label>Your Name</label><input type="text" placeholder="e.g. Rahul Sharma" /></div>
+            <div class="form-field"><label>Phone Number</label><input type="text" placeholder="+91 98765 43210" /></div>
+            <div class="form-row">
+              <div class="form-field"><label>Date</label><input type="text" placeholder="Jun 15, 2026" /></div>
+              <div class="form-field"><label>Time</label><input type="text" placeholder="7:30 PM" /></div>
+            </div>
+            <div class="form-field"><label>Occasion</label><select><option>Select occasion</option><option>Birthday 🎂</option><option>Anniversary 💍</option><option>Date Night 🌹</option><option>Friends Hangout</option><option>Just Dinner</option></select></div>
+            <button class="submit-btn">Confirm Reservation →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6: FIND US -->
+      <div class="section" id="sec-find">
+        <div class="find-layout">
+          <div class="map-side">
+            <div class="map-grid"></div>
+            <!-- Decorative road lines -->
+            <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15" viewBox="0 0 400 300">
+              <line x1="0" y1="150" x2="400" y2="150" stroke="#4a9" stroke-width="8"/>
+              <line x1="200" y1="0" x2="200" y2="300" stroke="#4a9" stroke-width="6"/>
+              <line x1="80" y1="0" x2="120" y2="300" stroke="#4a9" stroke-width="3"/>
+              <line x1="300" y1="0" x2="280" y2="300" stroke="#4a9" stroke-width="3"/>
+              <line x1="0" y1="80" x2="400" y2="100" stroke="#4a9" stroke-width="3"/>
+              <line x1="0" y1="220" x2="400" y2="200" stroke="#4a9" stroke-width="3"/>
+            </svg>
+            <div class="map-pin">
+              <div class="pin-pulse">
+                <div class="pin-dot"></div>
+              </div>
+            </div>
+            <div class="map-label">Cafe MX2 📍</div>
+          </div>
+          <div class="find-info-side">
+            <div class="sec-eyebrow">Find Us</div>
+            <div class="find-title">Come Visit Us</div>
+            <div class="find-sub">Located in the heart of Wadgaon Sheri,<br>easily accessible from Kharadi & Kalyani Nagar.</div>
+            <div class="contact-block">
+              <div class="cb-label">Address</div>
+              <div class="cb-val">Shop 9, 43/6A, Pooja Classic<br>North of Mutha River, Wadgaon Sheri, Pune — 411014</div>
+            </div>
+            <div class="contact-block">
+              <div class="cb-label">Hours & Contact</div>
+              <div class="hours-row"><span class="day">Mon–Sun</span><span class="time">7:00 AM – 12:00 Midnight</span></div>
+              <div class="hours-row" style="border:none;padding-top:6px"><span class="day">Phone</span><span class="time">+91 7769834424</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /website -->
+  </div><!-- /browser -->
+
+  <!-- Controls -->
+  <div id="controls">
+    <button class="ctrl-btn" id="btn-prev" title="Previous">‹</button>
+    <button class="ctrl-btn active-play" id="btn-play" title="Play/Pause">⏸</button>
+    <button class="ctrl-btn" id="btn-next" title="Next">›</button>
+    <div id="section-dots">
+      <div class="s-dot active" data-i="0"><div class="tooltip">Hero</div></div>
+      <div class="s-dot" data-i="1"><div class="tooltip">Menu</div></div>
+      <div class="s-dot" data-i="2"><div class="tooltip">Vibe</div></div>
+      <div class="s-dot" data-i="3"><div class="tooltip">Reviews</div></div>
+      <div class="s-dot" data-i="4"><div class="tooltip">Booking</div></div>
+      <div class="s-dot" data-i="5"><div class="tooltip">Find Us</div></div>
+    </div>
+    <span id="section-label">Hero Section</span>
+    <span id="time-left">Auto-playing</span>
+  </div>
+</div><!-- /pitch-shell -->
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px';
+  ring.style.top = e.clientY + 'px';
+});
+
+// Particles
+const shell = document.getElementById('pitch-shell');
+for(let i = 0; i < 18; i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 3 + 1;
+  p.style.cssText = `
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;
+    background:rgba(212,168,83,${Math.random()*0.3+0.05});
+    animation-duration:${Math.random()*15+10}s;
+    animation-delay:${Math.random()*10}s;
+  `;
+  shell.appendChild(p);
+}
+
+// Section data
+const sections = [
+  {id:'sec-hero', label:'Hero Section', url:'www.cafemx2.in', counter:'01 / 06'},
+  {id:'sec-menu', label:'Menu Page', url:'www.cafemx2.in/menu', counter:'02 / 06'},
+  {id:'sec-vibe', label:'Our Vibe', url:'www.cafemx2.in/vibe', counter:'03 / 06'},
+  {id:'sec-reviews', label:'Reviews', url:'www.cafemx2.in/reviews', counter:'04 / 06'},
+  {id:'sec-booking', label:'Book a Table', url:'www.cafemx2.in/reserve', counter:'05 / 06'},
+  {id:'sec-find', label:'Find Us', url:'www.cafemx2.in/find-us', counter:'06 / 06'},
+];
+
+let current = 0;
+let playing = true;
+let progress = 0;
+let interval = null;
+const DURATION = 5000;
+const TICK = 50;
+
+function goTo(idx, dir = 1){
+  const old = document.getElementById(sections[current].id);
+  old.classList.remove('active');
+  old.classList.add('exit');
+  setTimeout(() => old.classList.remove('exit'), 700);
+  current = (idx + sections.length) % sections.length;
+  const sec = document.getElementById(sections[current].id);
+  sec.classList.add('active');
+  document.getElementById('url-text').textContent = sections[current].url;
+  document.getElementById('section-label').textContent = sections[current].label;
+  document.getElementById('sec-counter').textContent = sections[current].counter;
+  document.querySelectorAll('.s-dot').forEach((d,i) => d.classList.toggle('active', i === current));
+  progress = 0;
+  document.getElementById('progress-bar').style.width = '0%';
+}
+
+function tick(){
+  if(!playing) return;
+  progress += TICK;
+  const pct = (progress / DURATION) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  const remaining = Math.ceil((DURATION - progress) / 1000);
+  document.getElementById('time-left').textContent = `Next in ${remaining}s`;
+  if(progress >= DURATION) goTo(current + 1);
+}
+
+interval = setInterval(tick, TICK);
+
+document.getElementById('btn-play').addEventListener('click', () => {
+  playing = !playing;
+  document.getElementById('btn-play').textContent = playing ? '⏸' : '▶';
+  document.getElementById('btn-play').classList.toggle('active-play', playing);
+  document.getElementById('time-left').textContent = playing ? 'Auto-playing' : 'Paused';
+});
+document.getElementById('btn-prev').addEventListener('click', () => { playing = false; document.getElementById('btn-play').textContent = '▶'; document.getElementById('btn-play').classList.remove('active-play'); goTo(current - 1); });
+document.getElementById('btn-next').addEventListener('click', () => { playing = false; document.getElementById('btn-play').textContent = '▶'; document.getElementById('btn-play').classList.remove('active-play'); goTo(current + 1); });
+document.querySelectorAll('.s-dot').forEach(d => {
+  d.addEventListener('click', () => {
+    playing = false;
+    document.getElementById('btn-play').textContent = '▶';
+    document.getElementById('btn-play').classList.remove('active-play');
+    goTo(parseInt(d.dataset.i));
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight') document.getElementById('btn-next').click();
+  if(e.key === 'ArrowLeft') document.getElementById('btn-prev').click();
+  if(e.key === ' ') { e.preventDefault(); document.getElementById('btn-play').click(); }
+});
+</script>
+</body>
+</html>
